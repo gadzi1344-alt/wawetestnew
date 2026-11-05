@@ -68,8 +68,35 @@ export async function onRequestGet({ params, request, env }) {
       const tracks = [...(r.popularTracks || []), ...rest]
         .filter((t) => t && t.id && !seen.has(t.id) && seen.add(t.id))
         .map(slim);
+      const albums = (r.albums || []).map((al) => ({
+        id: al.id,
+        title: al.title,
+        cover: img(al.coverUri),
+        year: al.year || 0,
+        type: al.type === 'single' ? 'Сингл' : 'Альбом',
+      }));
       return json({
         artist: { id: a.id, name: a.name, cover: img(a.cover?.uri) },
+        tracks,
+        albums,
+      });
+    }
+
+    // ---- Страница альбома: все треки всех дисков ----
+    if (params.action === 'album') {
+      const id = sp.get('id');
+      if (!id) return json({ error: 'Нужен id' }, 400);
+      const d = await get(`/albums/${encodeURIComponent(id)}/with-tracks`);
+      const r = d.result || {};
+      const tracks = (r.volumes || []).flat().map((x) => slim(x.track || x));
+      return json({
+        album: {
+          id: r.id,
+          title: r.title,
+          cover: img(r.coverUri),
+          year: r.year || 0,
+          artists: (r.artists || []).map((x) => x.name).join(', '),
+        },
         tracks,
       });
     }

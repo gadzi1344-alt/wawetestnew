@@ -29,8 +29,10 @@
   /* ---------- Sidebar ---------- */
   aside{position:absolute;left:12px;top:12px;bottom:12px;width:76px;z-index:15;display:flex;flex-direction:column;gap:2px;padding:26px 0;overflow-x:hidden;overflow-y:auto;scrollbar-width:none;background:transparent;transition:width .5s var(--ease)}
   aside::-webkit-scrollbar{display:none}
-  aside:hover{width:240px}
-  aside:hover .nav{box-shadow:0 30px 70px #000b}
+  aside{pointer-events:none}
+  .nav{pointer-events:auto}
+  aside.open{width:240px}
+  aside.open .nav{box-shadow:0 30px 70px #000b}
   .brand{font-weight:800;font-size:19px;letter-spacing:-.4px;padding:2px 12px 26px}
   .nav button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:10px;color:var(--muted);font-size:14px;font-weight:500;text-align:left;transition:background .25s var(--ease),color .25s}
   .nav button:hover{color:var(--txt);background:var(--surface)}
@@ -47,8 +49,8 @@
   .nav button.active{color:#fff}
   .nav button.active svg{opacity:1}
   .nav button{border-radius:999px}
-  aside:not(:hover) .nav button{width:46px;height:46px;margin:0 auto;padding:0;border-radius:50%;justify-content:center;gap:0}
-  aside:not(:hover) .nav button.active{background:#ffffff1c}
+  aside:not(.open) .nav button{width:46px;height:46px;margin:0 auto;padding:0;border-radius:50%;justify-content:center;gap:0}
+  aside:not(.open) .nav button.active{background:#ffffff1c}
   .nav button.active{background:#ffffff1c}
 
   /* Плейлисты: название всегда в одну строку с многоточием, без вылезания за капсулу */
@@ -60,20 +62,20 @@
 
   /* Подписи плавно выезжают при наведении, в свёрнутом виде скрыты */
   .nav span{display:inline-block;max-width:160px;overflow:hidden;white-space:nowrap;opacity:1;transform:translateX(0);transition:max-width .5s var(--ease),opacity .3s,transform .4s var(--ease)}
-  aside:not(:hover) .nav span{max-width:0;opacity:0;transform:translateX(-10px)}
-  aside:hover .nav span{transition-delay:.12s}
+  aside:not(.open) .nav span{max-width:0;opacity:0;transform:translateX(-10px)}
+  aside.open .nav span{transition-delay:.12s}
   .nav button{transition:background .25s,color .25s,gap .4s var(--ease),padding .4s var(--ease)}
-  aside:not(:hover) .nav button{gap:0;padding:12px 20px}
+  aside:not(.open) .nav button{gap:0;padding:12px 20px}
 
   .brand{display:flex;align-items:baseline;white-space:nowrap;overflow:hidden;padding:2px 12px 26px}
   .brand b{font-size:21px;font-weight:900;letter-spacing:-.4px;color:#fff}
   .brand span{font-size:19px;font-weight:800;letter-spacing:-.4px;max-width:140px;overflow:hidden;opacity:1;transition:max-width .5s var(--ease),opacity .3s}
-  aside:not(:hover) .brand{justify-content:center;padding:2px 0 26px}
-  aside:not(:hover) .brand span{max-width:0;opacity:0}
+  aside:not(.open) .brand{justify-content:center;padding:2px 0 26px}
+  aside:not(.open) .brand span{max-width:0;opacity:0}
 
   .label,#plList{transition:opacity .3s,visibility .3s}
-  aside:not(:hover) .label,aside:not(:hover) #plList{opacity:0;visibility:hidden}
-  aside:hover .label,aside:hover #plList{transition-delay:.15s}
+  aside:not(.open) .label,aside:not(.open) #plList{opacity:0;visibility:hidden}
+  aside.open .label,aside.open #plList{transition-delay:.15s}
   .label{display:flex;justify-content:space-between;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);padding:24px 12px 8px}
   .plus{width:24px;height:24px;border-radius:7px;color:var(--muted);font-size:18px;line-height:1;display:grid;place-items:center;transition:.2s}
   .plus:hover{color:var(--txt);background:var(--surface)}
@@ -217,7 +219,7 @@
 
   /* ---------- Плейлисты и избранное внутри капсулы ---------- */
   .pl-wrap{overflow:hidden;max-height:0;opacity:0;transition:max-height .5s var(--ease),opacity .3s}
-  aside:hover .pl-wrap{max-height:560px;opacity:1;transition-delay:.12s}
+  aside.open .pl-wrap{max-height:560px;opacity:1;transition-delay:.12s}
   .pl-wrap .label{padding:18px 12px 8px}
   #content,#body,.list{width:100%}
 
@@ -290,10 +292,10 @@
     .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
     .app{grid-template-columns:1fr}
     aside{position:static;width:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:10px 12px;border-radius:0;border:0;border-bottom:1px solid var(--line);box-shadow:none;transition:none;gap:6px;align-items:center}
-    aside:hover{width:auto}
-    aside:not(:hover) .nav span{max-width:none;opacity:1;transform:none}
-    aside:not(:hover) .nav button{gap:6px;padding:10px 12px;width:auto;height:auto;margin:0;border-radius:999px}
-    aside:not(:hover) #plList{opacity:1;visibility:visible}
+    aside.open{width:auto}
+    aside:not(.open) .nav span{max-width:none;opacity:1;transform:none}
+    aside:not(.open) .nav button{gap:6px;padding:10px 12px;width:auto;height:auto;margin:0;border-radius:999px}
+    aside:not(.open) #plList{opacity:1;visibility:visible}
     .brand,.label{display:none}
     .nav{display:flex;gap:6px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
     .nav button.active::before{display:none}
@@ -461,6 +463,34 @@
   .ad-t button{min-width:30px;height:30px;padding:0 10px;border-radius:999px;background:var(--surface2);flex:none;font-size:12px}
   @media (max-width:900px){.ad{grid-template-columns:1fr}}
   @media (max-width:760px){.search{margin-right:0}.me-btn{right:14px;top:calc(env(safe-area-inset-top,0px) + 12px)}.pf{top:8px;right:8px;bottom:8px;width:calc(100% - 16px)}}
+  /* ---------- Страница артиста ---------- */
+  .ahead{display:flex;gap:30px;align-items:flex-end;margin-bottom:34px}
+  .aavatar{width:210px;height:210px;border-radius:50%;background:var(--surface2) center/cover;flex:none;box-shadow:0 30px 70px #000c;animation:pop .7s var(--ease) both}
+  .ainfo{min-width:0}
+  .aname{font-size:clamp(40px,5.5vw,72px);font-weight:900;letter-spacing:-2px;line-height:1;margin:6px 0 10px}
+  .ainfo .acts{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .acols{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:36px;align-items:start;margin-bottom:10px}
+  .newrel{display:block;width:100%;text-align:left;animation:rise .6s var(--ease) both;transition:transform .35s var(--ease)}
+  .newrel:hover{transform:translateY(-3px)}
+  .nr-cover{width:100%;aspect-ratio:1;border-radius:16px;background:var(--surface2) center/cover;box-shadow:0 20px 40px #0009}
+  .nr-name{font-weight:700;margin-top:12px;font-size:15px}
+  .nr-sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .hrow{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 16px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .hrow::-webkit-scrollbar{display:none}
+  .acard{flex:0 0 164px;scroll-snap-align:start;text-align:left;min-width:0;animation:rise .5s var(--ease) both;transition:transform .35s var(--ease)}
+  .acard:hover{transform:translateY(-4px)}
+  .ac-cover{width:164px;height:164px;border-radius:14px;background:var(--surface2) center/cover;box-shadow:0 14px 30px #0008}
+  .ac-t{font-weight:700;font-size:14px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ac-s{font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  @media (max-width:760px){
+    .ahead{flex-direction:column;align-items:center;text-align:center;gap:18px}
+    .aavatar{width:190px;height:190px}
+    .aname{font-size:40px}
+    .ainfo .acts{justify-content:center}
+    .acols{grid-template-columns:1fr;gap:26px}
+    .acard{flex-basis:146px}
+    .ac-cover{width:146px;height:146px}
+  }
 </style>
 </head>
 <body>
@@ -709,6 +739,7 @@ async function load(path) {
     const { tracks } = await api(path);
     if (my !== loadId) return;
     renderTracks(tracks || []);
+    return tracks || [];
   } catch (e) {
     if (my !== loadId) return;
     setBody(`<p class="sub">${esc(e.message)}</p>
@@ -760,34 +791,98 @@ function showTrends() {
       <h2>Топ-чарт</h2>
       <div class="sub">Россия</div>
     </div></div>`);
-  load('/api/chart?option=russia');
+  load('/api/chart?option=russia').then((t) => { if (t && t.length && view.type === 'trends') syncChartPlaylist(t); });
+}
+
+// ---------- Страница артиста (как в Яндекс Музыке) ----------
+function setPageRaw(html) {
+  loadId++;
+  const c = $('#content');
+  c.style.animation = 'none';
+  void c.offsetWidth;
+  c.style.animation = '';
+  c.innerHTML = html;
+}
+
+const albumCard = (a) => `<button class="acard" data-album="${esc(a.id)}"><div class="ac-cover" style="${bg(a.cover)}"></div><div class="ac-t">${esc(a.title)}</div><div class="ac-s">${a.year || ''}${a.type ? ' · ' + esc(a.type) : ''}</div></button>`;
+const fpCard = (p) => `<button class="acard" data-fp="${esc(p.id)}"><div class="ac-cover" style="${bg(p.cover || (p.tracks || [])[0]?.cover)}"></div><div class="ac-t">${esc(p.name)}</div><div class="ac-s">${esc(p.category)} · ${p.count ?? (p.tracks || []).length} треков</div></button>`;
+
+// Подборки администратора, в которых есть этот исполнитель
+async function featuredWithArtist(aid) {
+  try {
+    const { playlists: list } = await api('/api/u/featured');
+    const full = await Promise.all(list.slice(0, 30).map((p) =>
+      api('/api/u/featured?id=' + enc(p.id)).then((d) => d.playlist).catch(() => null)));
+    return full.filter((p) => p && (p.tracks || []).some((t) => (t.artists || []).some((a) => String(a.id) === String(aid))));
+  } catch (_) { return []; }
 }
 
 async function showArtist(id) {
   view = { type: 'artist' };
   setActive(null);
-  setPage('<p class="sub" style="margin-top:8px">Загрузка…</p>');
+  setPageRaw('<p class="sub" style="margin-top:8px">Загрузка…</p>');
   const my = loadId;
   try {
-    const { artist, tracks } = await api('/api/artist?id=' + enc(id));
+    const [{ artist, tracks, albums = [] }, feats] = await Promise.all([
+      api('/api/artist?id=' + enc(id)),
+      featuredWithArtist(id),
+    ]);
     if (my !== loadId) return;
-    setPage(`
-      <div class="ph">
-        <div class="avatar" style="${bg(artist.cover)}"></div>
-        <div>
+    const newest = [...albums].sort((a, b) => (b.year || 0) - (a.year || 0))[0];
+    setPageRaw(`
+      <div class="ahead">
+        <div class="aavatar" style="${bg(artist.cover)}"></div>
+        <div class="ainfo">
           <div class="kicker">Исполнитель</div>
-          <h2>${esc(artist.name)}</h2>
-          <div class="sub">${tracks.length} треков</div>
+          <h1 class="aname">${esc(artist.name)}</h1>
+          <div class="sub">${(tracks || []).length} треков · ${albums.length} альбомов</div>
           <div class="acts"><button class="btn" data-play-all>${I_PLAY} Слушать</button><button class="btn ghost" data-shuffle>Перемешать</button></div>
         </div>
       </div>
-      <div class="section">Все треки · популярные сверху</div>`);
+      <div class="acols">
+        <section>
+          <div class="section">Популярные треки</div>
+          <div id="body"></div>
+        </section>
+        <div class="newrel-col">
+          ${newest ? `<div class="section">Новый релиз</div>
+          <button class="newrel" data-album="${esc(newest.id)}">
+            <div class="nr-cover" style="${bg(newest.cover)}"></div>
+            <div class="nr-name">${esc(newest.title)}</div>
+            <div class="nr-sub">${newest.year || ''}${newest.type ? ' · ' + esc(newest.type) : ''}</div>
+          </button>` : ''}
+        </div>
+      </div>
+      ${albums.length ? `<div class="section">Альбомы</div><div class="hrow">${albums.map(albumCard).join('')}</div>` : ''}
+      ${feats.length ? `<div class="section">Плейлисты</div><div class="hrow">${feats.map(fpCard).join('')}</div>` : ''}`);
     renderTracks(tracks || []);
   } catch (e) {
     if (my !== loadId) return;
-    setPage(`<p class="sub">${esc(e.message)}</p>
+    setPageRaw(`<p class="sub">${esc(e.message)}</p>
       <div class="acts" style="margin-top:14px"><button class="btn ghost" data-retry>Повторить</button></div>`);
     lastLoad = '/api/artist?id=' + enc(id);
+  }
+}
+
+// ---------- Страница альбома ----------
+async function showAlbum(id) {
+  view = { type: 'album' };
+  setActive(null);
+  setPageRaw('<p class="sub" style="margin-top:8px">Загрузка…</p>');
+  const my = loadId;
+  try {
+    const { album, tracks } = await api('/api/album?id=' + enc(id));
+    if (my !== loadId) return;
+    setPage(`<div class="ph"><div class="cover" style="${bg(album.cover)}"></div><div>
+      <div class="kicker">Альбом${album.year ? ' · ' + album.year : ''}</div>
+      <h2>${esc(album.title)}</h2>
+      <div class="sub">${esc(album.artists || '')} · ${(tracks || []).length} треков</div>
+      <div class="acts"><button class="btn" data-play-all>${I_PLAY} Слушать</button><button class="btn ghost" data-shuffle>Перемешать</button></div>
+    </div></div>`);
+    renderTracks(tracks || []);
+  } catch (e) {
+    if (my !== loadId) return;
+    setPageRaw(`<p class="sub">${esc(e.message)}</p>`);
   }
 }
 
@@ -1024,6 +1119,10 @@ function setActive(key) {
   $$('#plList button').forEach((b) => b.classList.toggle('active', 'pl:' + b.dataset.pl === key));
 }
 
+const asideEl = $('aside');
+$('#nav').addEventListener('mouseenter', () => asideEl.classList.add('open'));
+$('#nav').addEventListener('mouseleave', () => asideEl.classList.remove('open'));
+
 function route(go) {
   if (go === 'home') showHome();
   else if (go === 'wave') showWave();
@@ -1060,6 +1159,8 @@ $('#content').addEventListener('click', (e) => {
   if (go) return route(go.dataset.go);
   const fpc = e.target.closest('[data-fp]');
   if (fpc) return showFeatured(fpc.dataset.fp);
+  const alb = e.target.closest('[data-album]');
+  if (alb) return showAlbum(alb.dataset.album);
   const plCard = e.target.closest('[data-pl]');
   if (plCard) return showPlaylist(plCard.dataset.pl);
   if (e.target.closest('[data-newpl]')) return openModal(null);
@@ -1527,6 +1628,54 @@ async function showAdmin() {
       }
     } catch (er) { toast(er.message); }
   };
+}
+
+// ---------- Чарт: автоплейлист «Горячее сейчас» ----------
+const CHART_PL_ID = 'auto-chart';
+const CHART_PL_NAME = 'Горячее сейчас';
+
+// Акварельная обложка: мягкие цветные пятна и бумажная зернистость
+function watercolorCover(seed) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 480;
+  const x = c.getContext('2d');
+  let h = 2166136261;
+  for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  const rnd = () => { h = (Math.imul(h, 1664525) + 1013904223) >>> 0; return h / 4294967296; };
+  x.fillStyle = '#0d0d12';
+  x.fillRect(0, 0, 480, 480);
+  const hues = Array.from({ length: 5 }, () => Math.floor(rnd() * 360));
+  x.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 10; i++) {
+    const cx = rnd() * 480, cy = rnd() * 480, r = 120 + rnd() * 220;
+    const hue = hues[i % hues.length];
+    const g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0, `hsla(${hue},65%,58%,.42)`);
+    g.addColorStop(0.6, `hsla(${hue},60%,45%,.14)`);
+    g.addColorStop(1, `hsla(${hue},60%,40%,0)`);
+    x.fillStyle = g;
+    x.fillRect(0, 0, 480, 480);
+  }
+  x.globalCompositeOperation = 'source-over';
+  for (let i = 0; i < 7000; i++) {
+    x.fillStyle = `rgba(255,255,255,${rnd() * 0.03})`;
+    x.fillRect(rnd() * 480, rnd() * 480, 2, 2);
+  }
+  return c.toDataURL('image/jpeg', 0.85);
+}
+
+function syncChartPlaylist(tracks) {
+  let pl = playlists.find((p) => p.id === CHART_PL_ID);
+  const created = !pl;
+  if (!pl) {
+    pl = { id: CHART_PL_ID, name: CHART_PL_NAME, auto: true, tracks: [], cover: '' };
+    playlists.unshift(pl);
+  }
+  pl.tracks = tracks.slice(0, 50).map((t) => ({ id: t.id, title: t.title, artists: t.artists, duration: t.duration, cover: t.cover }));
+  if (!pl.cover) pl.cover = watercolorCover(CHART_PL_ID);
+  savePlaylists();
+  renderPlaylists();
+  if (created) toast(`Создан плейлист «${CHART_PL_NAME}»`);
 }
 
 // ---------- Старт ----------
